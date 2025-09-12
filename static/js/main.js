@@ -1,60 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const uploadForm = document.getElementById('upload-form');
-    const fileInput = document.getElementById('document-upload');
+    const RENDER_BACKEND_URL = 'https://guild-buildathon.onrender.com';
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const fileSelectBtn = document.getElementById('file-select-btn');
     const fileNameSpan = document.getElementById('file-name');
-    const resultContainer = document.getElementById('result-container');
-    const resultOutput = document.getElementById('result-output');
-    const spinner = document.getElementById('spinner');
-
-    fileInput.addEventListener('change', () => {
-        if (fileInput.files.length > 0) {
-            fileNameSpan.textContent = fileInput.files[0].name;
-        } else {
-            fileNameSpan.textContent = 'No file chosen';
-        }
+    const resultCard = document.getElementById('result-card');
+    const resultTitle = document.getElementById('result-title');
+    const resultMessage = document.getElementById('result-message');
+    const clientsTableBody = document.getElementById('clients-table-body');
+    fileSelectBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('border-blue-500', 'bg-gray-700');
     });
-
-    uploadForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        if (fileInput.files.length === 0) {
-            alert('Please select a file to process.');
-            return;
-        }
-
-        const file = fileInput.files[0];
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('border-blue-500', 'bg-gray-700');
+    });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-blue-500', 'bg-gray-700');
+        const file = e.dataTransfer.files[0];
+        handleFile(file);
+    });
+    function handleFile(file) {
+        if (!file) return;
+        fileNameSpan.textContent = `Selected file: ${file.name}`;
+        showStatus('Processing...', 'Processing document with Gemini AI.', 'text-blue-400');
+        processFileWithBackend(file);
+    }
+    async function processFileWithBackend(file) {
         const formData = new FormData();
         formData.append('document', file);
-
-        // Show spinner and result container
-        resultContainer.classList.remove('hidden');
-        spinner.classList.remove('hidden');
-        resultOutput.textContent = '';
-        resultOutput.style.color = 'var(--text-color)';
-
         try {
-            const response = await fetch('/api/documents/process', {
+            const response = await fetch(`${RENDER_BACKEND_URL}/api/documents/process`, {
                 method: 'POST',
                 body: formData,
             });
-
             const result = await response.json();
-
             if (!response.ok) {
-                throw new Error(result.message || 'An error occurred during processing.');
+                throw new Error(result.message || 'An unknown error occurred in the backend.');
             }
-            
-            // Format the JSON for beautiful display
-            const formattedResult = JSON.stringify(result.data, null, 2);
-            resultOutput.textContent = formattedResult;
-            resultOutput.style.color = 'var(--success-color)';
-
+            showStatus('Success!', 'Document processed successfully.', 'text-green-400');
+            addClientToTable(result.data);
         } catch (error) {
-            resultOutput.textContent = `Error: ${error.message}`;
-            resultOutput.style.color = 'var(--error-color)';
-        } finally {
-            // Hide spinner
-            spinner.classList.add('hidden');
+            console.error('Error:', error);
+            showStatus('Error!', `Failed to process document: ${error.message}`, 'text-red-400');
         }
-    });
+    }
+    function showStatus(title, message, colorClass) {
+        resultCard.classList.remove('hidden');
+        resultTitle.textContent = title;
+        resultMessage.textContent = message;
+        resultTitle.className = 'text-lg font-semibold';
+        resultTitle.classList.add(colorClass);
+    }
+    function addClientToTable(data) {
+        const newRow = document.createElement('tr');
+        newRow.className = 'border-b border-gray-700';
+        newRow.innerHTML = `
+            <td class="p-3">${data.customer_name || 'N/A'}</td>
+            <td class="p-3">${data.policy_number || 'N/A'}</td>
+            <td class="p-3">${data.policy_end_date || 'N/A'}</td>
+            <td class="p-3">
+                <span class="bg-green-600 text-white px-2 py-1 rounded-full text-sm">Processed</span>
+            </td>
+        `;
+        clientsTableBody.prepend(newRow);
+    }
 });
