@@ -7,7 +7,6 @@ interface ProcessedData {
   customer_name?: string;
   policy_number?: string;
   policy_end_date?: string;
-  // Add any other fields Gemini might return
 }
 
 export function DocumentUpload() {
@@ -17,9 +16,11 @@ export function DocumentUpload() {
   const [statusMessage, setStatusMessage] = useState("");
 
   // =========================================================================
-  // THIS IS THE GUARANTEED CORRECT URL
+  // This is the new, foolproof way to get the URL
+  // It reads the variable you set in the Vercel dashboard.
+  // The 'NEXT_PUBLIC_' prefix is a special Next.js requirement.
   // =========================================================================
-  const RENDER_BACKEND_URL = 'https://guild-buildathon.onrender.com';
+  const RENDER_BACKEND_URL = process.env.NEXT_PUBLIC_RENDER_BACKEND_URL;
 
   const handleFileChange = (newFiles: File[]) => {
     setFilesToProcess(prevFiles => [...prevFiles, ...newFiles]);
@@ -42,6 +43,10 @@ export function DocumentUpload() {
   };
   
   const processDocuments = async () => {
+      if (!RENDER_BACKEND_URL) {
+          setStatusMessage("Configuration error: Backend URL is not set.");
+          return;
+      }
       if (filesToProcess.length === 0) {
         setStatusMessage("Please select at least one file to process.");
         return;
@@ -49,7 +54,6 @@ export function DocumentUpload() {
       setIsProcessing(true);
       setStatusMessage(`Processing ${filesToProcess.length} document(s)...`);
 
-      // In a real app, you might upload and process all, but for the demo, we process one by one.
       const file = filesToProcess[0];
       const formData = new FormData();
       formData.append('document', file);
@@ -67,7 +71,7 @@ export function DocumentUpload() {
 
         const data: ProcessedData = result.data;
         setStatusMessage(`Success! Processed ${file.name}. Customer: ${data.customer_name || 'N/A'}`);
-        setFilesToProcess([]); // Clear files after processing
+        setFilesToProcess([]);
         
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
