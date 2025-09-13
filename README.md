@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InsureAgent Dashboard Frontend
 
-## Getting Started
+This is the frontend for the "InsureAgent" dashboard, a submission for **Problem Statement 2** of The Guild Buildathon. It's a modern, responsive Next.js (React) application deployed on Vercel.
 
-First, run the development server:
+**Live Application URL:** [https://guild-buildathon-frontend.vercel.app](https://guild-buildathon-frontend.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Professional UI/UX:** A sleek, dark-themed dashboard designed for insurance agents.
+- **Interactive Document Upload:** Features a drag-and-drop file zone for uploading policy documents and images.
+- **Real-time API Communication:** Communicates with the live Python/Flask backend to process documents using Gemini AI.
+- **Dynamic Results:** Displays the status of the upload and the results from the AI in real-time.
+- **Client Management View:** Includes a table to display and search for processed clients.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework:** Next.js
+- **Language:** TypeScript
+- **Styling:** Standard CSS (No Tailwind CSS)
+- **Deployment:** Vercel
 
-## Learn More
+## 🚀 Getting Started Locally
 
-To learn more about Next.js, take a look at the following resources:
+### Prerequisites
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Node.js](https://nodejs.org/) (v18 or later) and npm.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Setup
 
-## Deploy on Vercel
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/DipayanDasgupta/Guild_Buildathon_Frontend.git
+    cd Guild_Buildathon_Frontend
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3.  **Configure Environment Variables:**
+    The application is hardcoded to use the live production backend. No environment variables are needed for local development to work out-of-the-box.
+
+4.  **Run the application:**
+    ```bash
+    npm run dev
+    ```
+    The dashboard will be available at `http://localhost:3000`.
+
