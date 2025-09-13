@@ -1,7 +1,18 @@
 "use client";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { LayoutDashboard, Users, FileText, Calculator, Building2, Smartphone, TrendingUp, Shield } from "lucide-react";
 
+const navigation = [
+  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "Clients", href: "/clients", icon: Users },
+  { name: "Documents", href: "/documents", icon: FileText },
+  // Add other links here as you build them
+];
+
 export function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
@@ -9,14 +20,12 @@ export function Sidebar() {
         <h2>Turtlemint</h2>
       </div>
       <nav className="sidebar-nav">
-        <a href="#" className="active"><LayoutDashboard size={20} /><span>Dashboard</span></a>
-        <a href="#"><Calculator size={20} /><span>Get Quote</span></a>
-        <a href="#"><Users size={20} /><span>Advisors</span></a>
-        <a href="#"><Shield size={20} /><span>Products</span></a>
-        <a href="#"><Smartphone size={20} /><span>TurtlemintPro</span></a>
-        <a href="#"><Building2 size={20} /><span>B2B Solutions</span></a>
-        <a href="#"><TrendingUp size={20} /><span>Analytics</span></a>
-        <a href="#"><FileText size={20} /><span>Documents</span></a>
+        {navigation.map((item) => (
+          <Link key={item.name} href={item.href} className={pathname === item.href ? 'active' : ''}>
+            <item.icon size={20} />
+            <span>{item.name}</span>
+          </Link>
+        ))}
       </nav>
       <div className="sidebar-footer">
         <div className="avatar">V</div>
