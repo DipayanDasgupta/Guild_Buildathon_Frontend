@@ -1,20 +1,23 @@
 import { Sidebar } from "@/components/sidebar";
 import { DocumentUpload } from "@/components/document-upload";
 import { ClientsTable } from "@/components/clients-table";
+import { StatsCards } from "@/components/stats-cards";
+import { QuickActions } from "@/components/quick-actions";
 
-// This component will be served at the root URL ("/")
-export default function DashboardPage() {
+export default function Dashboard() {
   return (
-    <div className="dashboard-container">
+    <>
       <Sidebar />
       <main className="main-content">
         <div className="dashboard-header">
-          <h1>Dashboard</h1>
-          <p>Welcome back, Agent Smith</p>
+          <h1>Turtlemint Dashboard</h1>
+          <p>Welcome back, Vijay</p>
         </div>
+        <StatsCards />
+        <QuickActions />
         <DocumentUpload />
         <ClientsTable />
       </main>
-    </div>
+    </>
   );
 }

@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-// This is the correct, modern way to import global CSS in Next.js
-import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "InsureAgent Dashboard",
-  description: "Modern insurance agent dashboard for client and document management",
+  title: "Turtlemint Advisor Dashboard",
+  description: "Technology trusted by advisors",
 };
 
 export default function RootLayout({
@@ -14,6 +12,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet" href="/style.css" />
+      </head>
       <body>{children}</body>
     </html>
   );
