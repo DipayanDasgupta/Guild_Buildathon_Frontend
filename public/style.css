@@ -216,3 +216,21 @@ html.light .btn-secondary:hover {
 html.light .sidebar-footer p {
     color: var(--text-light);
 }
+
+/* --- Delete Button --- */
+.btn-delete {
+  background-color: transparent;
+  border: 1px solid #ef4444; /* Red border */
+  color: #ef4444; /* Red text/icon */
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+.btn-delete:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}
