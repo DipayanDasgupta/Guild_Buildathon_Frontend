@@ -2,7 +2,8 @@ import { Sidebar } from "@/components/sidebar";
 import { DocumentUpload } from "@/components/document-upload";
 import { ClientsTable } from "@/components/clients-table";
 
-export default function Dashboard() {
+// This component will be served at the root URL ("/")
+export default function DashboardPage() {
   return (
     <div className="dashboard-container">
       <Sidebar />

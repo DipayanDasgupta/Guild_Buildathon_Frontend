@@ -23,7 +23,7 @@ body {
 /* --- Layout --- */
 .sidebar {
   width: 256px;
-  background-color: #111827; /* A slightly darker sidebar */
+  background-color: #111827;
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
@@ -32,7 +32,7 @@ body {
 }
 .main-content {
   flex: 1;
-  margin-left: 256px; /* Same as sidebar width */
+  margin-left: 256px;
   padding: 2rem;
 }
 
