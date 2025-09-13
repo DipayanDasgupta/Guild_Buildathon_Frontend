@@ -1,8 +1,9 @@
 "use client";
 import Link from 'next/link';
+import Image from 'next/image'; // Import the Next.js Image component
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, FileText, Calculator, Building2, Smartphone, TrendingUp, Shield } from "lucide-react";
-import { ThemeToggle } from './theme-toggle'; // Import the new component
+import { LayoutDashboard, Users, FileText } from "lucide-react";
+import { ThemeToggle } from './theme-toggle';
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -15,8 +16,14 @@ export function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <div className="logo"></div>
-        <h2>Turtlemint</h2>
+        {/* Use the Next.js Image component for optimization */}
+        <Image 
+          src="/turtlemint-logo.png" 
+          alt="Turtlemint Logo"
+          width={140} 
+          height={26}
+          priority={true} 
+        />
       </div>
       <nav className="sidebar-nav">
         {navigation.map((item) => (
@@ -30,7 +37,7 @@ export function Sidebar() {
         <div className="avatar">V</div>
         <div>
             <p>Vijay Kumar</p>
-            <p style={{fontSize: '0.8rem', color: '#9ca3af'}}>Expert Advisor</p>
+            <p style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>Expert Advisor</p>
         </div>
         <div style={{marginLeft: 'auto'}}>
             <ThemeToggle />

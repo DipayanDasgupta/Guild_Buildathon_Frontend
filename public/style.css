@@ -201,3 +201,18 @@ html.light .sidebar-header h2,
 html.light .sidebar-footer p {
   color: var(--text-white);
 }
+
+/* --- Fix for Secondary Button in Light Mode --- */
+html.light .btn-secondary {
+  background-color: #e5e7eb; /* A light gray background */
+  color: #374151; /* A dark text color */
+  border: 1px solid #d1d5db;
+}
+html.light .btn-secondary:hover {
+  background-color: #d1d5db;
+}
+
+/* --- Tweak for Sidebar Footer text in light mode --- */
+html.light .sidebar-footer p {
+    color: var(--text-light);
+}
