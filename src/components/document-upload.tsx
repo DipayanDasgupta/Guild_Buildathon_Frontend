@@ -2,7 +2,6 @@
 import { useState, useCallback } from "react";
 import { Upload, FileText, X } from "lucide-react";
 
-// Define an interface for the structured data we expect from Gemini
 interface ProcessedData {
   customer_name?: string;
   policy_number?: string;
@@ -15,11 +14,7 @@ export function DocumentUpload() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
-  // =========================================================================
-  // This is the new, foolproof way to get the URL
-  // It reads the variable you set in the Vercel dashboard.
-  // The 'NEXT_PUBLIC_' prefix is a special Next.js requirement.
-  // =========================================================================
+  // This is the new, foolproof way. It reads the variable you set in the Vercel dashboard.
   const RENDER_BACKEND_URL = process.env.NEXT_PUBLIC_RENDER_BACKEND_URL;
 
   const handleFileChange = (newFiles: File[]) => {
@@ -44,7 +39,7 @@ export function DocumentUpload() {
   
   const processDocuments = async () => {
       if (!RENDER_BACKEND_URL) {
-          setStatusMessage("Configuration error: Backend URL is not set.");
+          setStatusMessage("Configuration error: Backend URL is not set. Please check Vercel environment variables.");
           return;
       }
       if (filesToProcess.length === 0) {
