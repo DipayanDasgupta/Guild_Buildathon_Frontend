@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/components/theme-provider";
+
+// We DO NOT import globals.css here anymore.
+// The stylesheet is linked directly in the <head> tag below.
 
 export const metadata: Metadata = {
   title: "Turtlemint Advisor Dashboard",
@@ -11,11 +15,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* This is the correct way to link the public stylesheet */}
         <link rel="stylesheet" href="/style.css" />
       </head>
-      <body>{children}</body>
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
