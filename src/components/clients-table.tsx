@@ -12,11 +12,22 @@ export function ClientsTable() {
     const fetchRecentClients = async () => {
       try {
         setLoading(true);
-        // Call the new, specific endpoint for the dashboard
         const response = await fetch(`${RENDER_BACKEND_URL}/api/dashboard/recent-clients`);
         const data = await response.json();
-        setClients(data);
-      } catch (error) { console.error("Failed to fetch recent clients:", error); }
+        
+        // --- THIS IS THE FIX ---
+        // We now check if the data is an array before trying to set it.
+        // If it's not, we default to an empty array to prevent the .map() crash.
+        if (Array.isArray(data)) {
+          setClients(data);
+        } else {
+          setClients([]); // Default to empty array on unexpected response
+        }
+
+      } catch (error) { 
+        console.error("Failed to fetch recent clients:", error);
+        setClients([]); // Also default to empty array on fetch error
+      }
       finally { setLoading(false); }
     };
     fetchRecentClients();
@@ -34,13 +45,18 @@ export function ClientsTable() {
           {loading ? (
             <tr><td colSpan={3}>Loading...</td></tr>
           ) : (
-            clients.map(client => (
-              <tr key={client.id}>
-                <td>{client.name}</td>
-                <td>{client.policyType || 'N/A'}</td>
-                <td><span className={`status-badge ${client.status === 'Active' ? 'status-active' : 'status-pending'}`}>{client.status}</span></td>
-              </tr>
-            ))
+            // Now, even if clients is empty, the .map will not crash.
+            clients.length > 0 ? (
+                clients.map(client => (
+                  <tr key={client.id}>
+                    <td>{client.name}</td>
+                    <td>{client.policyType || 'N/A'}</td>
+                    <td><span className={`status-badge ${client.status === 'Active' ? 'status-active' : 'status-pending'}`}>{client.status}</span></td>
+                  </tr>
+                ))
+            ) : (
+                <tr><td colSpan={3} style={{textAlign: 'center', padding: '1rem'}}>No recent clients found.</td></tr>
+            )
           )}
         </tbody>
       </table>

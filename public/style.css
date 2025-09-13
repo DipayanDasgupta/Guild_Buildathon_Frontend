@@ -261,3 +261,221 @@ html.light .sidebar-footer p {
 .sidebar-dropdown-toggle .rotated { transform: rotate(180deg); }
 .sidebar-dropdown-menu { margin-left: 1.5rem; margin-top: 0.5rem; border-left: 1px solid var(--border-color); padding-left: 1rem; }
 .sidebar-dropdown-menu a { font-size: 0.9rem; padding: 0.5rem; }
+
+/* --- Collapsible Sidebar --- */
+.sidebar { transition: width 0.3s ease; }
+.sidebar-collapsed { width: 80px; }
+.sidebar-collapsed .sidebar-header h2, .sidebar-collapsed .sidebar-nav span, .sidebar-collapsed .sidebar-footer div { display: none; }
+.sidebar .sidebar-toggle {
+  background: none; border: 1px solid var(--border-color); color: var(--text-muted);
+  border-radius: 50%; width: 24px; height: 24px; display: flex;
+  align-items: center; justify-content: center; cursor: pointer;
+  position: absolute; top: 28px; right: -12px; background-color: var(--bg-dark);
+  transition: transform 0.3s ease;
+}
+.sidebar-collapsed .sidebar-toggle { transform: rotate(180deg); }
+.main-content { transition: margin-left 0.3s ease; }
+.main-content-collapsed { margin-left: 80px; }
+
+/* --- Client Page Filters --- */
+.filters-container { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+.search-wrapper { position: relative; flex-grow: 1; }
+.search-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+.search-input { width: 100%; padding-left: 2.5rem !important; }
+.filter-dropdown {
+  padding: 0.75rem 1rem; background-color: #374151;
+  border: 1px solid #4b5563; border-radius: 0.5rem; color: var(--text-white);
+}
+
+/* --- New Flexible Sidebar Styles --- */
+.sidebar {
+  background-color: #111827;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  z-index: 50;
+  width: 256px;
+  transition: transform 0.3s ease-in-out;
+}
+.main-content-flexible {
+  flex: 1;
+  padding: 2.5rem;
+  margin-left: 256px; /* Default for large screens */
+  transition: margin-left 0.3s ease-in-out;
+}
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+.menu-button {
+  display: none; /* Hidden on large screens */
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  z-index: 60;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%); /* Hidden by default */
+  }
+  .sidebar-open {
+    transform: translateX(0); /* Visible when open */
+  }
+  .sidebar-overlay-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .main-content-flexible {
+    margin-left: 0; /* Full width */
+  }
+  .menu-button {
+    display: block; /* Visible on small screens */
+  }
+  .dashboard-header {
+      gap: 1rem;
+  }
+  .dashboard-header h1 {
+      flex-grow: 1;
+  }
+}
+
+/* --- New Flexible Sidebar Styles --- */
+.sidebar {
+  background-color: #111827;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  z-index: 50;
+  width: 256px;
+  transition: transform 0.3s ease-in-out;
+}
+.main-content-flexible {
+  flex: 1;
+  padding: 2.5rem;
+  margin-left: 256px; /* Default for large screens */
+  transition: margin-left 0.3s ease-in-out;
+}
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+.menu-button {
+  display: none; /* Hidden on large screens */
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  z-index: 60;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%); /* Hidden by default */
+  }
+  .sidebar-open {
+    transform: translateX(0); /* Visible when open */
+  }
+  .sidebar-overlay-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .main-content-flexible {
+    margin-left: 0; /* Full width */
+  }
+  .menu-button {
+    display: block; /* Visible on small screens */
+  }
+  .dashboard-header {
+      gap: 1rem;
+  }
+  .dashboard-header h1 {
+      flex-grow: 1;
+  }
+}
+
+/* --- Final Full-Screen Layout Fix --- */
+.page-container {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+}
+/* Ensure the main content is a flex container itself to handle headers, etc. */
+.main-content-flexible {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* This is crucial to make it take up remaining space */
+}
+
+/* --- Final Collapsible Sidebar --- */
+.sidebar {
+  width: 256px; /* Expanded width */
+  transition: width 0.3s ease-in-out;
+  position: fixed;
+  height: 100vh;
+}
+.sidebar-collapsed {
+  width: 80px; /* Collapsed width */
+}
+.main-content {
+  margin-left: 256px; /* Default margin */
+  transition: margin-left 0.3s ease-in-out;
+}
+.main-content-collapsed {
+  margin-left: 80px; /* Margin when collapsed */
+}
+.sidebar-header {
+  position: relative;
+}
+.sidebar-toggle {
+  background: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  top: 28px;
+  right: -12px; /* Position it perfectly on the border */
+  z-index: 10;
+  transition: transform 0.3s ease-in-out;
+}
+.sidebar-collapsed .sidebar-toggle {
+  transform: rotate(180deg); /* Flip the arrow */
+}
+.sidebar-nav a {
+    justify-content: flex-start;
+}
+.sidebar-collapsed .sidebar-nav a {
+    justify-content: center; /* Center the icons when collapsed */
+}
+
+/* --- Final Dropdown Arrow Styles --- */
+.dropdown-arrow {
+  margin-left: auto;
+  transition: transform 0.2s ease-in-out;
+}
+.dropdown-arrow.rotated {
+  transform: rotate(180deg);
+}

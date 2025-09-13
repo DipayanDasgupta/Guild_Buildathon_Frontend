@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Sidebar } from "@/components/sidebar";
 import { Trash2 } from 'lucide-react';
 
-// This is the complete and correct interface definition
 interface Document {
   id: number;
   filename: string;
@@ -11,8 +10,6 @@ interface Document {
   extracted_data: {
     policy_number?: string;
     customer_name?: string;
-    premium_amount?: number;
-    policy_end_date?: string;
   };
   ai_summary: string;
   ai_category: string;
@@ -21,6 +18,7 @@ interface Document {
 }
 
 export default function DocumentsPage() {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
@@ -28,22 +26,24 @@ export default function DocumentsPage() {
 
   const fetchDocuments = async () => {
     try {
-      setLoading(true);
-      const response = await fetch(`${RENDER_BACKEND_URL}/api/documents`);
-      const data = await response.json();
-      setDocuments(data);
-    } catch (error) { console.error("Failed to fetch documents:", error); }
-    finally { setLoading(false); }
+        setLoading(true);
+        const response = await fetch(`${RENDER_BACKEND_URL}/api/documents`);
+        const data = await response.json();
+        setDocuments(Array.isArray(data) ? data : []);
+      } catch (error) { 
+          console.error("Failed to fetch documents:", error);
+          setDocuments([]);
+      } finally { setLoading(false); }
   };
   
   useEffect(() => { fetchDocuments(); }, [RENDER_BACKEND_URL]);
-  
+
   const handleDeleteDocument = async (docId: number) => {
     if (confirm("Are you sure you want to delete this document record?")) {
       try {
         const response = await fetch(`${RENDER_BACKEND_URL}/api/documents/${docId}`, { method: 'DELETE' });
         if (!response.ok) { throw new Error('Failed to delete document'); }
-        fetchDocuments(); // Refresh the list
+        fetchDocuments();
       } catch (error) {
         console.error("Error deleting document:", error);
         alert("Failed to delete document.");
@@ -60,20 +60,17 @@ export default function DocumentsPage() {
     }
   };
 
-  // The JSX is now correctly structured
   return (
-    <>
-      <Sidebar />
-      <main className="main-content">
+    <div className="page-container">
+      <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
+      <main className={`main-content ${sidebarCollapsed ? 'main-content-collapsed' : ''}`}>
         <div className="dashboard-header"><h1>Document Analytics</h1></div>
         <div className="card">
           <p>View all processed documents and their AI-powered insights.</p>
           <table className="clients-table">
             <thead><tr><th>Filename</th><th>Category</th><th>Upload Date</th><th>Sentiment</th><th>Actions</th></tr></thead>
             <tbody>
-              {loading ? (
-                <tr><td colSpan={5}>Loading documents...</td></tr>
-              ) : (
+              {loading ? ( <tr><td colSpan={5}>Loading...</td></tr> ) : (
                 documents.map(doc => (
                   <tr key={doc.id}>
                     <td>{doc.filename}</td>
@@ -105,6 +102,6 @@ export default function DocumentsPage() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
