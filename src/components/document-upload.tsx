@@ -1,18 +1,12 @@
 "use client";
-import { useState, useCallback } from "react";
-import { Upload, FileText, X } from "lucide-react";
-
-interface ProcessedData {
-  customer_name?: string;
-  policy_number?: string;
-  policy_end_date?: string;
-}
+import { useState } from "react";
+import Link from 'next/link'; // Import the Link component for navigation
+import { Upload } from "lucide-react";
 
 export function DocumentUpload() {
-  const [fileToProcess, setFileToProcess] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [fileToProcess, setFileToProcess] = useState<File | null>(null);
   const [statusMessage, setStatusMessage] = useState("");
-  
   const RENDER_BACKEND_URL = process.env.NEXT_PUBLIC_RENDER_BACKEND_URL || 'https://guild-buildathon.onrender.com';
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,14 +38,13 @@ export function DocumentUpload() {
             throw new Error(result.message || 'An API error occurred');
         }
 
-        const data: ProcessedData = result.data;
-        setStatusMessage(`Success! Processed ${fileToProcess.name}. Customer: ${data.customer_name || 'N/A'}`);
-        setFileToProcess(null); // Clear file after processing
-        // In a real app, you would now trigger a refresh of the clients table.
+        setStatusMessage(`Success! Document processed for client: ${result.data?.extracted_data?.customer_name || 'N/A'}`);
+        setFileToProcess(null);
+        // In a real app with state management, you would now trigger a refresh of the clients/documents tables.
         
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-        setStatusMessage(`Error processing ${fileToProcess.name}: ${errorMessage}`);
+        setStatusMessage(`Error processing document: ${errorMessage}`);
       } finally {
         setIsProcessing(false);
       }
@@ -77,7 +70,10 @@ export function DocumentUpload() {
         <button onClick={processDocument} disabled={isProcessing || !fileToProcess} className="btn btn-primary">
           {isProcessing ? "Processing..." : "Process Document"}
         </button>
-        <button className="btn btn-secondary">View History</button>
+        {/* The "View History" button is now a Link to the documents page */}
+        <Link href="/documents" className="btn btn-secondary">
+          View History
+        </Link>
       </div>
     </div>
   );

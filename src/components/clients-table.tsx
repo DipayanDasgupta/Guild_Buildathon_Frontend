@@ -1,12 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 
-interface Client {
-  id: string;
-  name: string;
-  policyType: string;
-  status: "Active" | "Pending" | "Expired" | "Cancelled";
-}
+interface Client { id: number; name: string; policyType: string; status: string; }
 
 export function ClientsTable() {
   const [clients, setClients] = useState<Client[]>([]);
@@ -14,38 +9,35 @@ export function ClientsTable() {
   const RENDER_BACKEND_URL = process.env.NEXT_PUBLIC_RENDER_BACKEND_URL || 'https://guild-buildathon.onrender.com';
 
   useEffect(() => {
-    const fetchClients = async () => {
+    const fetchRecentClients = async () => {
       try {
-        const response = await fetch(`${RENDER_BACKEND_URL}/api/clients`);
+        setLoading(true);
+        // Call the new, specific endpoint for the dashboard
+        const response = await fetch(`${RENDER_BACKEND_URL}/api/dashboard/recent-clients`);
         const data = await response.json();
         setClients(data);
-      } catch (error) {
-        console.error("Failed to fetch clients:", error);
-      } finally {
-        setLoading(false);
-      }
+      } catch (error) { console.error("Failed to fetch recent clients:", error); }
+      finally { setLoading(false); }
     };
-
-    fetchClients();
-  }, [RENDER_BACKEND_URL]); // Re-run if URL changes
+    fetchRecentClients();
+  }, [RENDER_BACKEND_URL]);
 
   return (
     <div className="card">
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-        <h3>Recent Clients</h3>
+      <div className="clients-header">
+        <div><h3>Recent Clients</h3><p>Manage your client portfolio and policy status</p></div>
         <button className="btn btn-primary" onClick={() => alert('Add New Client form would open here!')}>Add New Client</button>
       </div>
-      <p>Manage your client portfolio and policy status</p>
       <table className="clients-table">
         <thead><tr><th>Client Name</th><th>Policy Type</th><th>Status</th></tr></thead>
         <tbody>
           {loading ? (
-            <tr><td colSpan={3}>Loading clients...</td></tr>
+            <tr><td colSpan={3}>Loading...</td></tr>
           ) : (
             clients.map(client => (
               <tr key={client.id}>
                 <td>{client.name}</td>
-                <td>{client.policyType}</td>
+                <td>{client.policyType || 'N/A'}</td>
                 <td><span className={`status-badge ${client.status === 'Active' ? 'status-active' : 'status-pending'}`}>{client.status}</span></td>
               </tr>
             ))
