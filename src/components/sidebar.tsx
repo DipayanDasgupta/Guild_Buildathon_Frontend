@@ -36,7 +36,7 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean, setCo
         {!collapsed && (
           <>
             <Image src="/turtlemint-logo.png" alt="Turtlemint Logo" width={140} height={26} priority />
-            <h2 className="text-xl font-semibold">Insure-Agent AI</h2> {/* Added as an additional element */}
+            
           </>
         )}
         <button onClick={() => setCollapsed(!collapsed)} className="sidebar-toggle">
