@@ -59,25 +59,27 @@ export default function ReconciliationPage() {
 
         <div className="card">
           <h3>Upload Data for Reconciliation</h3>
-          {/* --- THIS IS THE KEY CHANGE --- */}
+          {/* The descriptive text is updated to specify PDF format. */}
           <p>Upload a bank statement and an internal policy payment log (in PDF format) to begin.</p>
-          <div className="upload-grid">
-            <div className="file-input-wrapper">
-              <label>1. Bank Statement (PDF)</label>
-              {/* This now accepts PDF files */}
-              <input type="file" accept=".pdf" onChange={(e) => setBankFile(e.target.files ? e.target.files[0] : null)} />
-            </div>
-            <div className="file-input-wrapper">
-              <label>2. Policy Log (PDF)</label>
-              {/* This now accepts PDF files */}
-              <input type="file" accept=".pdf" onChange={(e) => setPolicyFile(e.target.files ? e.target.files[0] : null)} />
-            </div>
-          </div>
-          <button onClick={handleRunReconciliation} disabled={isLoading || !bankFile || !policyFile} className="btn btn-primary" style={{marginTop: '1.5rem'}}>
-            {isLoading ? 'Processing...' : 'Run Reconciliation'}
-          </button>
-          {error && <p className="error-message" style={{marginTop: '1rem'}}>{error}</p>}
+        <div className="upload-grid">
+          <div className="file-input-wrapper">
+            {/* The label is updated. */}
+            <label>1. Bank Statement (PDF)</label>
+            {/* The input 'accept' attribute is changed to ".pdf". */}
+            <input type="file" accept=".pdf" onChange={(e) => setBankFile(e.target.files ? e.target.files[0] : null)} />
+         </div>
+        <div className="file-input-wrapper">
+          {/* The label is updated. */}
+          <label>2. Policy Log (PDF)</label>
+          {/* The input 'accept' attribute is changed to ".pdf". */}
+          <input type="file" accept=".pdf" onChange={(e) => setPolicyFile(e.target.files ? e.target.files[0] : null)} />
         </div>
+      </div>
+      <button onClick={handleRunReconciliation} disabled={isLoading || !bankFile || !policyFile} className="btn btn-primary" style={{marginTop: '1.5rem'}}>
+        {isLoading ? 'Processing...' : 'Run Reconciliation'}
+      </button>
+      {error && <p className="error-message" style={{marginTop: '1rem'}}>{error}</p>}
+    </div>
 
         {result && (
           // ... The result display section remains exactly the same ...
