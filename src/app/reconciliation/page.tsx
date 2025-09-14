@@ -40,7 +40,6 @@ export default function ReconciliationPage() {
       const data = await response.json();
       if (!response.ok) { throw new Error(data.message || 'Failed to run reconciliation.'); }
 
-      // Fetch the detailed results for the completed batch
       const resultResponse = await fetch(`${RENDER_BACKEND_URL}/api/reconciliation/batches/${data.batchId}`);
       const resultData = await resultResponse.json();
       setResult(resultData);
@@ -60,15 +59,18 @@ export default function ReconciliationPage() {
 
         <div className="card">
           <h3>Upload Data for Reconciliation</h3>
-          <p>Upload a bank statement and an internal policy payment log (in CSV format) to begin.</p>
+          {/* --- THIS IS THE KEY CHANGE --- */}
+          <p>Upload a bank statement and an internal policy payment log (in PDF format) to begin.</p>
           <div className="upload-grid">
             <div className="file-input-wrapper">
-              <label>1. Bank Statement (CSV)</label>
-              <input type="file" accept=".csv" onChange={(e) => setBankFile(e.target.files ? e.target.files[0] : null)} />
+              <label>1. Bank Statement (PDF)</label>
+              {/* This now accepts PDF files */}
+              <input type="file" accept=".pdf" onChange={(e) => setBankFile(e.target.files ? e.target.files[0] : null)} />
             </div>
             <div className="file-input-wrapper">
-              <label>2. Policy Log (CSV)</label>
-              <input type="file" accept=".csv" onChange={(e) => setPolicyFile(e.target.files ? e.target.files[0] : null)} />
+              <label>2. Policy Log (PDF)</label>
+              {/* This now accepts PDF files */}
+              <input type="file" accept=".pdf" onChange={(e) => setPolicyFile(e.target.files ? e.target.files[0] : null)} />
             </div>
           </div>
           <button onClick={handleRunReconciliation} disabled={isLoading || !bankFile || !policyFile} className="btn btn-primary" style={{marginTop: '1.5rem'}}>
@@ -78,6 +80,7 @@ export default function ReconciliationPage() {
         </div>
 
         {result && (
+          // ... The result display section remains exactly the same ...
           <div className="card">
             <h3>Reconciliation Results (Batch #{result.batchId})</h3>
             <div className="result-summary">
@@ -85,7 +88,6 @@ export default function ReconciliationPage() {
               <p><strong>Bank Exceptions:</strong> {result.exceptions.bank.length}</p>
               <p><strong>Policy Log Exceptions:</strong> {result.exceptions.policy.length}</p>
             </div>
-
             <div className="exception-workflow">
               <div className="exception-column">
                 <h4>Unmatched Bank Transactions</h4>
