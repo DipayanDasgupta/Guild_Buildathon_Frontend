@@ -495,3 +495,13 @@ html.light .sidebar-footer p {
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
+/* --- Reconciliation Page Styles --- */
+.upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; }
+.file-input-wrapper { display: flex; flex-direction: column; gap: 0.5rem; }
+.file-input-wrapper input {
+    padding: 0.5rem; background-color: #374151; border: 1px solid #4b5563;
+    border-radius: 0.5rem;
+}
+.result-summary { display: flex; gap: 2rem; margin-top: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+.exception-workflow { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+.exception-column h4 { font-weight: 600; margin-bottom: 1rem; }

@@ -3,17 +3,20 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, FileText, ChevronLeft, Shield, Car, Bike, Heart, ChevronDown } from "lucide-react";
+// --- THIS IS THE FIX: Import the 'Repeat' icon ---
+import { LayoutDashboard, Users, FileText, ChevronLeft, Shield, Car, Bike, Heart, ChevronDown, Repeat } from "lucide-react";
 import { ThemeToggle } from './theme-toggle';
 
 export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed: (c: boolean) => void }) {
   const pathname = usePathname();
   const [productsOpen, setProductsOpen] = useState(false);
 
+  // The navigation array now correctly includes the new Reconciliation item
   const navigation = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
     { name: "Clients", href: "/clients", icon: Users },
     { name: "Documents", href: "/documents", icon: FileText },
+    { name: "Reconciliation", href: "/reconciliation", icon: Repeat },
   ];
 
   const productLinks = [
