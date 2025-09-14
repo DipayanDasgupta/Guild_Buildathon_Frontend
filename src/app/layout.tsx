@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
-
-// We DO NOT import globals.css here.
-// The stylesheet is linked directly in the <head> tag below.
+import { AiChatbot } from "@/components/AiChatbot"; // Import the new component
+import React from 'react';
 
 export const metadata: Metadata = {
-  title: "Turtlemint Advisor Dashboard",
+  title: "Insure-Agent AI Dashboard",
   description: "Technology trusted by advisors",
 };
 
@@ -17,8 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* This is the correct way to link a stylesheet from the public folder */}
         <link rel="stylesheet" href="/style.css" />
+        {/* Required for react-chatbot-kit styles */}
+        <link rel="stylesheet" href="https://unpkg.com/react-chatbot-kit/build/main.css" />
       </head>
       <body>
         <ThemeProvider
@@ -28,6 +28,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          {/* The AI Chatbot is placed here so it appears on every page */}
+          <AiChatbot />
         </ThemeProvider>
       </body>
     </html>

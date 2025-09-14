@@ -8,7 +8,7 @@ import { ThemeToggle } from './theme-toggle';
 
 export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed: (c: boolean) => void }) {
   const pathname = usePathname();
-  const [clientsOpen, setClientsOpen] = useState(false);
+  const [clientsOpen, setClientsOpen] = useState(true); // Changed to true for default open
   const [productsOpen, setProductsOpen] = useState(false);
 
   const navigation = [
@@ -34,7 +34,10 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean, setCo
     <aside className={`sidebar ${collapsed ? 'sidebar-collapsed' : ''}`}>
       <div className="sidebar-header">
         {!collapsed && (
-          <Image src="/turtlemint-logo.png" alt="Turtlemint Logo" width={140} height={26} priority />
+          <>
+            <Image src="/turtlemint-logo.png" alt="Turtlemint Logo" width={140} height={26} priority />
+            <h2 className="text-xl font-semibold">Insure-Agent AI</h2> {/* Added as an additional element */}
+          </>
         )}
         <button onClick={() => setCollapsed(!collapsed)} className="sidebar-toggle">
           <ChevronLeft size={16} />

@@ -78,7 +78,7 @@ function ClientPageContent() {
   return (
     <>
       <div className="dashboard-header">
-        <h1>Client Management</h1>
+        <h1>{statusFilter} Clients</h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <select 
             value={statusFilter} 
@@ -90,14 +90,17 @@ function ClientPageContent() {
             <option value="Active">Active</option>
             <option value="Pending">Pending</option>
             <option value="Inactive">Inactive</option>
+            <option value="Prospective">Prospective</option>
           </select>
-          <button 
-            className="btn btn-primary" 
-            onClick={() => router.push('/onboarding')} 
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-          >
-            <PlusCircle size={20} /> Add New Client
-          </button>
+          {statusFilter === 'Prospective' && (
+            <button 
+              className="btn btn-primary" 
+              onClick={() => router.push('/onboarding')} 
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              <PlusCircle size={20} /> Add New Client
+            </button>
+          )}
         </div>
       </div>
       <div className="card">
