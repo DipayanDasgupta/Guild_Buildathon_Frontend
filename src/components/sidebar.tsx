@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { LayoutDashboard, Users, FileText, ChevronLeft, Shield, Car, Bike, Heart, ChevronDown, Repeat, CheckCircle, Clock, UserPlus } from "lucide-react";
 import { ThemeToggle } from './theme-toggle';
+import { ShieldCheck } from "lucide-react"; // Importing ShieldCheck icon
 
 export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed: (c: boolean) => void }) {
   const pathname = usePathname();
@@ -15,6 +16,7 @@ export function Sidebar({ collapsed, setCollapsed }: { collapsed: boolean, setCo
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
     { name: "Reconciliation", href: "/reconciliation", icon: Repeat },
     { name: "Documents", href: "/documents", icon: FileText },
+    { name: "Audit Logs", href: "/audits", icon: ShieldCheck }
   ];
 
   const clientLinks = [
