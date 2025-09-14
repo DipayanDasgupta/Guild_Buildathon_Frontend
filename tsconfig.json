@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -18,6 +17,9 @@
         "name": "next"
       }
     ],
+    // --- THIS IS THE CRITICAL FIX ---
+    // It tells TypeScript what the '@/' shortcut means.
+    // This allows you to use imports like '@/components/AiChatbot'.
     "paths": {
       "@/*": ["./src/*"]
     }
