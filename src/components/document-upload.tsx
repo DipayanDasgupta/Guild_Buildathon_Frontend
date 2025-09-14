@@ -1,13 +1,14 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from 'next/navigation'; // Import the router
+import { useRouter } from 'next/navigation';
+import Link from 'next/link'; // Import Link for navigation
 import { Upload } from "lucide-react";
 
 export function DocumentUpload() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [fileToProcess, setFileToProcess] = useState<File | null>(null);
   const [statusMessage, setStatusMessage] = useState("");
-  const router = useRouter(); // Initialize the router
+  const router = useRouter();
   const RENDER_BACKEND_URL = process.env.NEXT_PUBLIC_RENDER_BACKEND_URL || 'https://guild-buildathon.onrender.com';
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,33 +19,35 @@ export function DocumentUpload() {
   };
 
   const processDocument = async () => {
-      if (!fileToProcess) { setStatusMessage("Please select a file."); return; }
-      setIsProcessing(true);
-      setStatusMessage(`Processing with AI...`);
-      
-      const formData = new FormData();
-      formData.append('document', fileToProcess);
+    if (!fileToProcess) {
+      setStatusMessage("Please select a file.");
+      return;
+    }
+    setIsProcessing(true);
+    setStatusMessage(`Processing with AI...`);
 
-      try {
-        const response = await fetch(`${RENDER_BACKEND_URL}/api/documents/process`, {
-            method: 'POST',
-            body: formData,
-        });
-        const result = await response.json();
-        if (!response.ok) { throw new Error(result.message || 'API error'); }
+    const formData = new FormData();
+    formData.append('document', fileToProcess);
 
-        // --- THIS IS THE KEY CHANGE ---
-        // Encode the extracted data and pass it as a URL parameter to the new page
-        const extractedData = result.data?.extracted_data || {};
-        const queryString = encodeURIComponent(JSON.stringify(extractedData));
-        router.push(`/onboarding?data=${queryString}`);
-        
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Unknown error.";
-        setStatusMessage(`Error: ${errorMessage}`);
-      } finally {
-        setIsProcessing(false);
+    try {
+      const response = await fetch(`${RENDER_BACKEND_URL}/api/documents/process`, {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.message || 'API error');
       }
+
+      const extractedData = result.data?.extracted_data || {};
+      const queryString = encodeURIComponent(JSON.stringify(extractedData));
+      router.push(`/onboarding?data=${queryString}`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error.";
+      setStatusMessage(`Error: ${errorMessage}`);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -55,16 +58,36 @@ export function DocumentUpload() {
       <div className="drop-zone">
         <Upload />
         <p>Drop files here or click to browse</p>
-        <input type="file" onChange={handleFileSelect} style={{ display: 'none' }} id="file-upload" />
-        <label htmlFor="file-upload" className="btn btn-primary" style={{marginTop: '1rem', display: 'inline-block'}}>Choose File</label>
+        <input
+          type="file"
+          onChange={handleFileSelect}
+          style={{ display: 'none' }}
+          id="file-upload"
+        />
+        <label
+          htmlFor="file-upload"
+          className="btn btn-primary"
+          style={{ marginTop: '1rem', display: 'inline-block' }}
+        >
+          Choose File
+        </label>
       </div>
 
-      {statusMessage && <p style={{marginTop: '1rem', textAlign: 'center'}}>{statusMessage}</p>}
+      {statusMessage && (
+        <p style={{ marginTop: '1rem', textAlign: 'center' }}>{statusMessage}</p>
+      )}
       
       <div className="button-group">
-        <button onClick={processDocument} disabled={isProcessing || !fileToProcess} className="btn btn-primary">
-          {isProcessing ? "Processing..." : "Start Onboarding"}
+        <button
+          onClick={processDocument}
+          disabled={isProcessing || !fileToProcess}
+          className="btn btn-ai-gradient" // Updated class for gradient button
+        >
+          {isProcessing ? "Analyzing..." : "AI Fill Form"} {/* Updated button text */}
         </button>
+        <Link href="/documents" className="btn btn-secondary">
+          View History
+        </Link>
       </div>
     </div>
   );

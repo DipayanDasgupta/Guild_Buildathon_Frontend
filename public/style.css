@@ -505,3 +505,9 @@ html.light .sidebar-footer p {
 .result-summary { display: flex; gap: 2rem; margin-top: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
 .exception-workflow { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
 .exception-column h4 { font-weight: 600; margin-bottom: 1rem; }
+/* --- AI Gradient Button --- */
+.btn-ai-gradient {
+  background-image: linear-gradient(to right, #10b981, #3b82f6); /* Green to Blue */
+  border: none;
+  color: white;
+}
